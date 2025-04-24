@@ -1,0 +1,22 @@
+Team member:
+1. Andrew - 2702286715
+2. Hengky Arifin - 2702236490
+3. Kennard Elia - 2702246623
+4. ⁠Justien Venerdi - 2702278101
+5. ⁠Vincent - 2702279325
+
+Secondhand-marketplace adalah aplikasi marketplace yang memungkinkan pengguna untuk menjual dan membeli barang bekas dengan sistem listing yang terkontrol. Seller dapat membuat listing produk yang ingin dijual, kemudian listing tersebut akan direview dan disetujui oleh admin sebelum dipasarkan kepada pengguna lain.
+
+Fitur Utama:
+Seller Listing: Pengguna dapat mendaftarkan barang bekas yang ingin dijual lengkap dengan deskripsi, harga, dan gambar.
+
+Approval System: Admin akan melakukan verifikasi dan persetujuan terhadap setiap listing sebelum ditampilkan secara publik.
+
+User-Friendly Marketplace: Pengguna dapat mencari, melihat, dan membeli barang bekas yang telah disetujui.
+
+Kategori & Filter: Produk dapat dikategorikan untuk mempermudah pencarian.
+
+Dashboard Admin & Seller: Masing-masing memiliki antarmuka untuk mengelola listing dan penjualan.
+
+Tujuan:
+Memberikan platform yang aman dan efisien untuk jual beli barang bekas, sekaligus memastikan kualitas listing melalui proses moderasi.
