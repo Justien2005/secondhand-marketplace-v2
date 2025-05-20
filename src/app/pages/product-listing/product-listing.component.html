@@ -1,1 +1,29 @@
 <p>product-listing works!</p>
+<div class="row">
+    <div class="col-xl-12">
+        <app-card cardTitle="Basic Table" [options]="false" blockClass="table-border-style">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Stock Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of productList">
+                            <td>{{ product.id }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.price | currency }}</td>
+                            <td>{{ product.category }}</td>
+                            <td>{{ product.stockStatus }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </app-card>
+    </div>
+</div>

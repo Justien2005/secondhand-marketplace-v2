@@ -1,1 +1,46 @@
 <p>seller-list works!</p>
+<div class="row">
+    <div class="col-xl-12">
+        <app-card cardTitle="Basic Table" [options]="false" blockClass="table-border-style">
+            <div class="table-responsive">
+                <table class="table">
+                    <colgroup>
+                        <col style="width: 70%">
+                        <col style="width: 30%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Profile</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let seller of sellers">
+                            <td class="d-flex align-items-center">
+                                <div class="align-items-center w-20">
+                                    <div>
+                                        <img [src]="seller.photo" alt="Profile Image" class="rounded-circle me-2" width="40" height="40">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <span>{{ seller.name }}</span>
+                                    </div>
+                                    <div>
+                                        <span>{{ seller.location }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <button class="btn btn-success">Details</button>
+                                    <button class="btn btn-info">Product Listing</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </app-card>
+    </div>
+</div>

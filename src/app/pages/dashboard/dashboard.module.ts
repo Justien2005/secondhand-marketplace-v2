@@ -6,13 +6,15 @@ import { DashboardComponent } from './dashboard.component';
 import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
 import { DashboardSellerComponent } from './dashboard-seller/dashboard-seller.component';
 import { DashboardBuyerComponent } from './dashboard-buyer/dashboard-buyer.component';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 
 @NgModule({
   declarations: [DashboardComponent, DashboardAdminComponent, DashboardSellerComponent, DashboardBuyerComponent],
   imports: [
     CommonModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
+    SharedModule
   ]
 })
 export class DashboardModule { }
