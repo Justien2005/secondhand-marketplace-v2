@@ -1,17 +1,67 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PagesComponent } from './pages/pages.component';
-import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   {
     path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+    loadComponent: () => import('./auth/auth.component').then(c => c.AuthComponent),
+    children: [
+      {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+      },
+      { 
+        path: 'login',
+        loadComponent: () => import('./auth/login/login.component').then(c => c.LoginComponent)
+      },
+      { 
+        path: 'register',
+        loadComponent: () => import('./auth/register/register.component').then(c => c.RegisterComponent)
+      }
+    ]
   },
   {
     path: 'pages',
-    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule),
+    loadComponent: () => import('./pages/pages.component').then(c => c.PagesComponent),
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./pages/dashboard/dashboard.component').then(c => c.DashboardComponent),
+        children: [
+          { 
+            path: 'admin',
+            loadComponent: () => import('./pages/dashboard/dashboard-admin/dashboard-admin.component').then(c => c.DashboardAdminComponent)
+          },
+          { 
+            path: 'seller',
+            loadComponent: () => import('./pages/dashboard/dashboard-seller/dashboard-seller.component').then(c => c.DashboardSellerComponent)
+          },
+          {
+            path: 'buyer',
+            loadComponent: () => import('./pages/dashboard/dashboard-buyer/dashboard-buyer.component').then(c => c.DashboardBuyerComponent)
+          }
+        ]
+      },
+      {
+        path: 'product-listing',
+        loadComponent: () => import('./pages/product-listing/product-listing.component').then(c => c.ProductListingComponent)
+      },
+      {
+        path: 'seller',
+        children: [
+          {
+            path: 'seller-list',
+            loadComponent: () => import('./pages/seller/seller-list/seller-list.component').then(c => c.SellerListComponent),
+          },
+          {
+            path: 'seller-details/:seller_id',
+            loadComponent: () => import('./pages/seller/seller-details/seller-details.component').then(c => c.SellerDetailsComponent),
+          }
+        ]
+      },
+    ]
   },
   // {
   //   path: 'unauthorized',

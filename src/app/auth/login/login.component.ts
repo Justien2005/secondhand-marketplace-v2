@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/pages/model/user.model';
 import { AuthService } from 'src/services/auth.service';
@@ -7,7 +7,7 @@ import { SettingService } from 'src/services/setting.service';
 
 @Component({
   selector: 'app-login',
-  standalone: false,
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
         next: (res: { status: boolean }) => {
           console.log('Token is... :', res.status);
           if (res.status) {
-            this.router.navigate(['/pages/dashboard'], { relativeTo: this.route });
+            this.router.navigate(['/pages/dashboard']);
             return;
           } else {
             console.log('Token is invalid, redirecting to login...');

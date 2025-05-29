@@ -1,4 +1,3 @@
-<p>seller-list works!</p>
 <div class="row">
     <div class="col-xl-12">
         <app-card cardTitle="Basic Table" [options]="false" blockClass="table-border-style">
@@ -33,7 +32,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <button class="btn btn-success">Details</button>
+                                    <button class="btn btn-success" (click)="onClickDetails(seller.seller_id)">Details</button>
                                     <button class="btn btn-info">Product Listing</button>
                                 </div>
                             </td>

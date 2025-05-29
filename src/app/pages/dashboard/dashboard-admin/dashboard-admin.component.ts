@@ -15,11 +15,11 @@ import '../../../../assets/charts/amchart/worldLow.js';
 
 import dataJson from 'src/fake-data/map_data';
 import mapColor from 'src/fake-data/map-color-data.json';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-dashboard-admin',
-  standalone: false,
-  
+  imports: [SharedModule],
   templateUrl: './dashboard-admin.component.html',
   styleUrl: './dashboard-admin.component.scss'
 })

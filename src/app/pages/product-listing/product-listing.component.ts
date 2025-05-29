@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { TablesModule } from 'src/app/demo/pages/tables/tables.module';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-product-listing',
-  standalone: false,
-  
+  imports: [TablesModule, SharedModule],  
   templateUrl: './product-listing.component.html',
   styleUrl: './product-listing.component.scss'
 })

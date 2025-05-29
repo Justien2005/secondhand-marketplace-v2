@@ -1,10 +1,14 @@
 // angular import
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { NavBarComponent } from '../theme/layout/admin/nav-bar/nav-bar.component';
+import { NavigationComponent } from '../theme/layout/admin/navigation/navigation.component';
+import { BreadcrumbsComponent } from '../theme/shared/components/breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'app-pages',
-  standalone: false,
-  // imports: [NavBarComponent, NavigationComponent, RouterModule, CommonModule, ConfigurationComponent, BreadcrumbsComponent],
+  imports: [NavBarComponent, NavigationComponent, RouterModule, CommonModule, BreadcrumbsComponent, RouterModule],
   templateUrl: './pages.component.html',
   styleUrl: './pages.component.scss'
 })

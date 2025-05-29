@@ -10,7 +10,6 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 
 @NgModule({
-  declarations: [DashboardComponent, DashboardAdminComponent, DashboardSellerComponent, DashboardBuyerComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,

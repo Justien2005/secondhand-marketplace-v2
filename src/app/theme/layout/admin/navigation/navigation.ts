@@ -41,9 +41,19 @@ export const NavigationItems: NavigationItem[] = [
         id: 'seller-list',
         title: 'Seller List',
         type: 'item',
-        url: '/pages/seller-list',
+        url: '/pages/seller/seller-list',
         icon: 'feather icon-home',
-        classes: 'nav-item'
+        classes: 'nav-item',
+        children: [
+          {
+            id: 'seller-details',
+            title: 'Seller Details',
+            type: 'item',
+            url: '/pages/seller/seller-details/:seller_id',
+            icon: 'feather icon-user',
+            classes: 'nav-item',
+          }
+        ]
       },
       {
         id: 'setup',

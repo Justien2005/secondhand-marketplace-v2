@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingService {
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   storeToken(token: string) {
     localStorage.setItem('jwt', token);
@@ -17,5 +20,6 @@ export class SettingService {
 
   logout() {
     localStorage.removeItem('jwt');
+    this.router.navigate(['/']);
   }
 }

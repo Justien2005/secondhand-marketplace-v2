@@ -13,11 +13,9 @@ import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
-  declarations: [RegisterComponent, LoginComponent],
+  // declarations: [RegisterComponent, LoginComponent],
   imports: [
     CommonModule,
-    AuthRoutingModule,
-    AuthComponent,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
