@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col-xl-12">
+        <div>
+            <button class="btn btn-success mb-3" (click)="onAddProduct()">Add Product</button>
+        </div>
+        <app-card cardTitle="Basic Table" [options]="false" blockClass="table-border-style">
+            <div class="table-responsive">
+                <table class="table">
+                    <colgroup>
+                        <col style="width: 18%">
+                        <col style="width: 14%">
+                        <col style="width: 15%">
+                        <col style="width: 12%">
+                        <col style="width: 5%">
+                        <col style="width: 5%">
+                        <col style="width: 10%">
+                        <col style="width: 15%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Listing Date</th>
+                            <th>Stock</th>
+                            <th>Approved</th>
+                            <th>Condition</th>
+                            <th>Total Bids</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (product of products; track product) {
+                            <tr>
+                                <td>
+                                    <div>
+                                        {{product.product_name}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{product.category_name}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{product.price | currency:'IDR':'Rp':'1.0-0'}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{product.listing_date | date:'short'}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{product.stock}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span class="badge" style="font-size: 14px;" [ngClass]="{
+                                            'bg-warning': product.approved === null,
+                                            'bg-success': product.approved === 1,
+                                            'bg-danger': product.approved === 0
+                                        }">
+                                            {{product.approved === 1 ? 'Yes' : product.approved === 0 ? 'No' : 'Pending'}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{product.condition_type}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{product.bids.length}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-center d-flex justify-content-center">
+                                        <button [disabled]="product.approved === 0" class="btn btn-sm btn-info" (click)="viewDetails(product)">Detail</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </app-card>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-xl-12">
+        <app-card cardTitle="Basic Table" [options]="false" blockClass="table-border-style">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (product of products; track product) {
+                        <tr>
+                            <td>
+                                <img [src]="product.photoDataUrl || 'assets/app-asset/dummy-product.png'" [alt]="product.product_name"
+                                    class="product-photo">
+                            </td>
+                            <td>{{ product.product_name }}</td>
+                            <td>{{ product.category_name }}</td>
+                            <td>{{ product.price | currency:'IDR' }}</td>
+                            <td>
+                                <span class="badge" [ngClass]="{
+                        'bg-warning': product.approved === null,
+                        'bg-success': product.approved === 1,
+                        'bg-danger': product.approved === 0
+                    }">{{ product.approved === 1 ? 'Approved' : product.approved === 0 ? 'Rejected' : 'Pending' }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column gap-2 align-items-start">
+                                    <button class="btn btn-outline-primary btn-sm me-1"
+                                        (click)="viewDetails(product)">Details</button>
+                                    <button class="btn btn-success btn-sm me-1" [disabled]="product.approved === 1"
+                                        (click)="changeProductStatus(product, true)">Accept</button>
+                                    <button class="btn btn-danger btn-sm" [disabled]="product.approved === 0"
+                                        (click)="changeProductStatus(product, false)">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                        @if (products.length === 0) {
+                        <tr>
+                            <td colspan="6" class="text-center">No proposed products found.</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </app-card>
+    </div>
+</div>

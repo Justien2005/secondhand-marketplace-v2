@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { TablesModule } from 'src/app/demo/pages/tables/tables.module';
 import { UiBasicModule } from 'src/app/demo/ui-elements/ui-basic/ui-basic.module';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { SellerService } from 'src/services/seller.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-seller-list',
@@ -15,20 +17,34 @@ export class SellerListComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private sellerService: SellerService
   ) {}
 
   ngOnInit(): void {
-    this.sellers = [
-      { seller_id: 1, name: 'Seller 1', photo: 'https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png', location: 'Location 1' },
-      { seller_id: 2, name: 'Seller 2', photo: 'https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png', location: 'Location 2' },
-      { seller_id: 3, name: 'Seller 3', photo: 'https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png', location: 'Location 3' },
-      { seller_id: 4, name: 'Seller 4', photo: 'https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png', location: 'Location 4' },
-      { seller_id: 5, name: 'Seller 5', photo: 'https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png', location: 'Location 5' }
-    ];
+    this.getSellers();
   }
 
   onClickDetails(seller_id: number) {
     this.router.navigate(['/pages/seller/seller-details/' + seller_id]);
+  }
+
+  onSellerProducts(seller_id: number) {
+    this.router.navigate(['/pages/product-admin/product-seller/' + seller_id]);
+  }
+
+  getSellers() {
+    this.sellerService.getSellerList().subscribe({
+      next: (res: any) => {
+        this.sellers = res.data;
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: err.error.error,
+        });
+      },
+    })
   }
 
 

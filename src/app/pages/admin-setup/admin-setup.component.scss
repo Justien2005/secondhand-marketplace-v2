@@ -1,0 +1,55 @@
+.admin-setup-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  text-align: left;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+input[type="number"] {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1.1rem;
+  width: 100%;
+}
+
+button[type="submit"] {
+  background: #2ecc71;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button[type="submit"]:hover {
+  background: #27ae60;
+}
+
+.success-msg {
+  color: #27ae60;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  display: block;
+}

@@ -1,0 +1,85 @@
+<p>admin-order-list works!</p>
+<div class="product-seller-container">
+  <div class="header-section">
+    <h2>Order List</h2>
+    <div class="subtitle">Manage all orders and update their status</div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Buyer</th>
+          <th>Date</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Items</th>
+          <th class="text-center">Change Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders; track order) {
+        <tr>
+          <td>{{ order.order_id }}</td>
+          <td>{{ order.fullname }}</td>
+          <td>{{ order.order_time | date:'medium' }}</td>
+          <td>{{ order.total_price | currency:'IDR' }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'bg-warning': order.status_type === 'PENDING',
+              'bg-info': order.status_type === 'PROCESSING',
+              'bg-primary': order.status_type === 'SHIPPED',
+              'bg-success': order.status_type === 'DELIVERED'
+            }">{{ order.status_type | titlecase }}</span>
+          </td>
+          <td>
+            <button class="btn btn-outline-secondary btn-sm" (click)="toggleOrderItems(order.order_id)">
+              {{ expandedOrderId === order.order_id ? 'Hide' : 'Show' }} Items
+            </button>
+          </td>
+          <td>
+            <select class="form-select form-select-sm d-inline w-auto me-2" [(ngModel)]="order.selected_status_id">
+              <option *ngFor="let status of statusOptions" [value]="status.order_status_id">{{ status.status_type }}</option>
+            </select>
+            <button class="btn btn-primary btn-sm" (click)="saveOrderStatus(order)">Save</button>
+          </td>
+        </tr>
+        <tr *ngIf="expandedOrderId === order.order_id">
+          <td colspan="7">
+            <div class="order-items-table">
+              <table class="table table-sm mb-0">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of order.order_items; track item">
+                    <td>{{ item.product_name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price | currency:'IDR' }}</td>
+                    <td>{{ item.quantity * item.price | currency:'IDR' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+        }
+        @if (orders.length === 0 && !loading) {
+        <tr>
+          <td colspan="7" class="text-center">No orders found.</td>
+        </tr>
+        }
+        @if (loading) {
+        <tr>
+          <td colspan="7" class="text-center">Loading...</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

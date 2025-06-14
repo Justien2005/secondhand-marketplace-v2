@@ -2,12 +2,13 @@
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/pages/model/user.model';
 import { HttpService } from './http.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private api = 'http://localhost:5000';
+  private api = environment.api;
 
   constructor(
     private httpService: HttpService
@@ -23,5 +24,9 @@ export class AuthService {
 
   verifyToken() {
     return this.httpService.get(`${this.api}/verify-token`);
+  }
+
+  roleList () {
+    return this.httpService.get(`${this.api}/roles`);
   }
 }

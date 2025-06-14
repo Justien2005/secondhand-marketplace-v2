@@ -11,6 +11,7 @@ export interface NavigationItem {
   external?: boolean;
   target?: boolean;
   breadcrumbs?: boolean;
+  task?: string;
 
   children?: NavigationItem[];
 }
@@ -33,9 +34,10 @@ export const NavigationItems: NavigationItem[] = [
         id: 'product-listing',
         title: 'Product Listing',
         type: 'item',
-        url: '/pages/product-listing',
+        url: '/pages/product-admin/product-listing',
         icon: 'feather icon-home',
-        classes: 'nav-item'
+        classes: 'nav-item',
+        task: 'ADMIN_PRODUCT_LISTING',
       },
       {
         id: 'seller-list',
@@ -44,6 +46,7 @@ export const NavigationItems: NavigationItem[] = [
         url: '/pages/seller/seller-list',
         icon: 'feather icon-home',
         classes: 'nav-item',
+        task: 'ADMIN_SELLER_LIST',
         children: [
           {
             id: 'seller-details',
@@ -56,16 +59,70 @@ export const NavigationItems: NavigationItem[] = [
         ]
       },
       {
-        id: 'setup',
+        id: 'seller-my-product',
+        title: 'My Product',
+        type: 'item',
+        url: '/pages/seller-pages/seller-product-list',
+        icon: 'feather icon-package',
+        classes: 'nav-item',
+        task: 'SELLER_PRODUCT_LIST'
+      },
+      {
+        id: 'product-catalog',
+        title: 'Product Catalog',
+        type: 'item',
+        url: '/pages/buyer-pages/product-catalog',
+        icon: 'feather icon-shopping-cart',
+        classes: 'nav-item',
+        task: 'PRODUCT_CATALOG',
+      },
+      {
+        id: 'buyer-order',
+        title: 'My Order',
+        type: 'item',
+        url: '/pages/buyer-pages/buyer-order',
+        icon: 'feather icon-package',
+        classes: 'nav-item',
+        task: 'BUYER_ORDER'
+      },
+      {
+        id: 'admin-order-list',
+        title: 'Order List',
+        type: 'item',
+        url: '/pages/admin-order-list/list',
+        icon: 'feather icon-package',
+        classes: 'nav-item',
+        task: 'ADMIN_ORDER_LIST'
+      },
+      {
+        id: 'wishlist',
+        title: 'Wishist',
+        type: 'item',
+        url: '/pages/buyer-pages/wishlist',
+        icon: 'feather icon-heart',
+        classes: 'nav-item',
+        task: 'BUYER_WISHLIST'
+      },
+      {
+        id: 'admin-setup',
         title: 'Setup',
         type: 'item',
-        url: '/pages/setup',
+        url: '/pages/admin-setup',
         icon: 'feather icon-home',
-        classes: 'nav-item'
+        classes: 'nav-item',
+        task: 'ADMIN_SETUP',
       },
     ]
   },
 ];
+
+export function filterNavigationItems(items: NavigationItem[], allowedTasks: string[]): NavigationItem[] {
+  return items.map(item => ({
+    ...item,
+    hidden: item.task ? !allowedTasks.includes(item.task) : item.hidden,
+    children: item.children ? filterNavigationItems(item.children, allowedTasks) : undefined
+  }));
+}
 
 // export const NavigationItems: NavigationItem[] = [
 //   {

@@ -6,6 +6,7 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { SettingService } from 'src/services/setting.service';
 
 @Component({
   selector: 'app-nav-right',
@@ -18,9 +19,15 @@ export class NavRightComponent {
   // public props
 
   // constructor
-  constructor() {
+  constructor(
+    private settingService: SettingService
+  ) {
     const config = inject(NgbDropdownConfig);
 
     config.placement = 'bottom-right';
+  }
+
+  onLogout() {
+    this.settingService.logout();
   }
 }

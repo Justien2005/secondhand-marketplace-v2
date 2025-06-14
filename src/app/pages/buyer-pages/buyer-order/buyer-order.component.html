@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col-xl-12">
+        <app-card cardTitle="My Orders" [options]="false" blockClass="table-border-style">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Order ID</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (order of orders; track order.order_id; let i = $index) {
+                        <tr>
+                            <td>{{ i+1 }}</td>
+                            <td>{{ order.order_id }}</td>
+                            <td>{{ order.total_price | currency:'IDR':'Rp':'1.0-0' }}</td>
+                            <td>
+                                <span class="badge" [ngClass]="{
+                        'bg-success': order.status_type === 'DELIVERED',
+                        'bg-warning': order.status_type === 'PENDING',
+                        'bg-info': order.status_type === 'SHIPPED',
+                        'bg-danger': order.status_type === 'CANCELLED'
+                    }">{{ order.status_type }}</span>
+                            </td>
+                            <td>{{ order.order_time | date:'medium' }}</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm"
+                                    (click)="openDetailModal(orderDetailModal, order)">
+                                    Details
+                                </button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </app-card>
+    </div>
+</div>
+
+<ng-template #orderDetailModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Order Details</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    @if (selectedOrder) {
+        <div class="modal-body">
+            <span>Total products: {{ selectedOrder.order_items.length }}</span>
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Order Item ID</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (orderItem of selectedOrder.order_items; track orderItem.order_item_id) {
+                        <tr>
+                            <td>{{ orderItem.order_item_id }}</td>
+                            <td>{{ orderItem.product_name }}</td>
+                            <td>{{ orderItem.quantity }}</td>
+                            <td>{{ orderItem.product_price | currency:'IDR':'Rp':'1.0-0' }}</td>
+                            <td>{{ orderItem.price | currency:'IDR':'Rp':'1.0-0' }}</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</ng-template>

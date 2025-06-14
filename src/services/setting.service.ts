@@ -14,6 +14,24 @@ export class SettingService {
     localStorage.setItem('jwt', token);
   }
 
+  storeAccess(access: any) {
+    const data = JSON.parse(JSON.stringify(access));
+    localStorage.setItem('user', data);
+  }
+
+  getUserAccess() {
+    return JSON.parse(localStorage.getItem('user'));
+  }
+
+  storeRoles(roles: any) {
+    const data = JSON.parse(JSON.stringify(roles));
+    localStorage.setItem('roles', data);
+  }
+
+  getUserRoles() {
+    return JSON.parse(localStorage.getItem('roles'));
+  }
+
   getToken() {
     return localStorage.getItem('jwt');
   }

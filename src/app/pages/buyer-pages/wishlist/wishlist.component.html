@@ -1,0 +1,25 @@
+@if (loading) {
+  <div class="loading-overlay">
+    <span>Loading wishlist...</span>
+  </div>
+} @else {
+  <div class="wishlist-container">
+    <h2>Your Wishlist</h2>
+    <div class="wishlist-grid">
+      <div class="wishlist-card" *ngFor="let product of wishlist">
+        <div class="wishlist-image-wrapper" [class.monochrome]="product.stock === 0">
+          <img [src]="product.photoDataUrl || productDummyPhoto" [alt]="product.product_name" class="wishlist-image">
+          <span *ngIf="product.stock === 0" class="out-of-stock">Out of Stock</span>
+        </div>
+        <div class="wishlist-info">
+          <h3>{{ product.product_name }}</h3>
+          <h6>Location: {{ product.location }}</h6>
+          <p class="wishlist-price">{{ product.price | currency:'IDR':'Rp':'1.0-0' }}</p>
+          <button class="btn btn-primary me-4" (click)="onDetail(product.product_id)">Details</button>
+          <button class="btn btn-danger" (click)="removeWishlist(product.product_id)">Remove</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="wishlist.length === 0 && !loading" class="empty-msg">No products in your wishlist.</div>
+  </div>
+}

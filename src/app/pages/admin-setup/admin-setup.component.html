@@ -1,0 +1,9 @@
+<div class="admin-setup-container">
+  <h3>Admin Fee Setup</h3>
+  <form (ngSubmit)="saveFee()" #feeForm="ngForm">
+    <label for="adminFee">Admin Fee (%)</label>
+    <input type="number" id="adminFee" name="adminFee" [(ngModel)]="adminFee" min="0" max="100" required>
+    <button type="submit">Save</button>
+    <span *ngIf="feeSaved" class="success-msg">Fee updated!</span>
+  </form>
+</div>

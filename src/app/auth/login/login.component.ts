@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/pages/model/user.model';
 import { AuthService } from 'src/services/auth.service';
 import { SettingService } from 'src/services/setting.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -39,9 +40,9 @@ export class LoginComponent implements OnInit {
     const token = this.setting.getToken();
     if (token) {
       this.authService.verifyToken().subscribe({
-        next: (res: { status: boolean }) => {
+        next: (res: any) => {
           console.log('Token is... :', res.status);
-          if (res.status) {
+          if (res.valid) {
             this.router.navigate(['/pages/dashboard']);
             return;
           } else {
@@ -64,13 +65,24 @@ export class LoginComponent implements OnInit {
   onSubmitLogin() {
     const user: User = this.userForm.value as User;
     this.authService.login(user).subscribe({
-      next: (res: { token: string }) => {
-        console.log('Login successful:', res);
+      next: (res: any) => {
         this.setting.storeToken(res.token);
+        const access = {
+          email: res.email,
+          username: res.username,
+          user_id: res.user_id
+        };
+        this.setting.storeAccess(JSON.stringify(access));
+        this.setting.storeRoles(JSON.stringify(res.roles));
         this.router.navigate(['/pages/dashboard'], { relativeTo: this.route });
       },
       error: (err) => {
         console.error('Error during registration:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: err.error.error,
+        });
       },
     })
   }

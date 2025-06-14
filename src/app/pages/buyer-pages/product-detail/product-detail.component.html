@@ -1,0 +1,188 @@
+@if (loading) {
+    <div class="loading-overlay">
+        <app-spinner></app-spinner>
+    </div>
+} @else {
+    <div class="product-detail-container">
+        <div class="product-detail-card">
+            <div class="product-image-section">
+                <img [src]="product.photoDataUrl || productDummyPhoto" [alt]="product.product_name" class="product-detail-image" />
+            </div>
+            <div class="product-info-section">
+                <h2 class="product-title">{{ product.product_name }}</h2>
+                <h4>{{ product.category_name }}</h4>
+                <span class="product-price">{{ product.price|currency:'IDR':'Rp':'1.0-0' }}</span>
+                @if (roles.role_name === 'SELLER') {
+                    <p class="text-primary" style="cursor: pointer;" (click)="openModalChangePrice()"><i>click here for change price</i></p>
+                }
+                <p class="product-description">{{ product.description || '- no description -' }}</p>
+                <button 
+                    [disabled]="product.stock <= 0"
+                    [ngClass]="{
+                        'buy-now-btn': true,
+                        'out-of-stock-bg': product.stock <= 0,
+                    }" 
+                    class="buy-now-btn mb-4" 
+                    (click)="openBuyModal()"
+                    *ngIf="roles.role_name === 'BUYER'">
+                {{ product.stock > 0 ? 'Buy now' : 'Out of stocks' }}</button>
+                <button 
+                    [disabled]="product.stock <= 0"
+                    [ngClass]="{
+                        'bid-now-btn': true,
+                        'out-of-stock-bg': product.stock <= 0,
+                    }" 
+                    class="bid-now-btn" 
+                    (click)="openBidModal()"
+                    *ngIf="roles.role_name === 'BUYER' && product.stock > 0">
+                {{ product.stock > 0 ? 'Bid' : 'Out of stocks' }}</button>
+
+                @if (roles.role_name === 'SELLER' || roles.role_name === 'ADMIN') {
+                    <div class="bid-section mt-4">
+                        <h3 class="bid-title">Bids</h3>
+                        <div class="bid-list">
+                            @if (product.bids.length > 0) {
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Bid Amount</th>
+                                                <th>Bidder</th>
+                                                <th>Bid Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (bid of product.bids; track bid.bid_id) {
+                                                <tr>
+                                                    <td>{{ bid.bid_price | currency:'IDR':'Rp':'1.0-0' }}</td>
+                                                    <td>{{ bid.buyer_name }}</td>
+                                                    <td>{{ bid.bid_date | date:'medium' }}</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            } @else {
+                                <p class="no-bids">No bids available.</p>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            @if (roles.role_name === 'BUYER') {
+                <div class="p-3 d-flex flex-column text-end">
+                    <div *ngIf="!productInCart" class="d-flex justify-content-end align-items-center text-primary" (click)="openCartModal()" style="cursor: pointer;">
+                        <i style="font-size: 26px;" class="feather icon-shopping-cart me-2"></i>
+                        <span>Add to cart</span>
+                    </div>
+                    <div *ngIf="productInCart" class="d-flex justify-content-end align-items-center" style="cursor: pointer;">
+                        <i style="font-size: 26px;" class="feather icon-shopping-cart me-2"></i>
+                        <span>Product in cart</span>
+                    </div>
+                    <div>
+                        <span
+                            [ngClass]="{'text-danger': productInWishlist}"
+                            style="font-size: 28px; cursor: pointer;"
+                            (click)="toggleWishlist()">
+                            &#10084;
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<ng-template #buyModal let-modal let-close="close">
+    <div class="modal-header">
+        <h5 class="modal-title">Purchase Product</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <h4 class="mb-2">Purchase this product?</h4>
+        <h3 class="product-name"><b>{{ product.product_name }}</b></h3>
+        <h5 class="mb-2">Stocks: <b>{{ product.stock }}</b></h5>
+        <h4 class="product-price mb-4">{{ (product.price * quantityToBuy) | currency:'IDR':'Rp':'1.0-0' }} + {{ (product.price * quantityToBuy * adminFee / 100) | currency:'IDR':'Rp':'1.0-0' }} <span style="font-size: 14px;">admin fees</span></h4>
+        <div class="form-group">
+            <h5 for="quantity">Quantity:</h5>
+            <input type="number" id="quantity" [(ngModel)]="quantityToBuy" class="form-control" min="1" [max]="product.stock"/>
+            @if (quantityToBuy > product.stock) {
+                <span class="text-danger">Quantity exceeds available stock!</span>
+            }
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onPurchase()" [disabled]="quantityToBuy > product.stock">Confirm Purchase</button>
+    </div>
+</ng-template>
+
+<ng-template #bidModal let-modal let-close="close">
+    <div class="modal-header">
+        <h5 class="modal-title">Bid Product</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <h4 class="mb-2">Bid this product?</h4>
+        <h3 class="product-name"><b>{{ product.product_name }}</b></h3>
+        <h5 class="mb-2">Stocks: <b>{{ product.stock }}</b></h5>
+        <h4 class="product-price mb-4">{{ product.price | currency:'IDR':'Rp':'1.0-0' }}</h4>
+        <div class="form-group">
+            <h5 for="quantity">Bid Price:</h5>
+            <input type="number" id="quantity" [(ngModel)]="priceBid" class="form-control" min="1" [max]="product.price"/>
+            @if (priceBid > product.price) {
+                <span class="text-danger">Bid price must be lower!</span>
+            }
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onBid()" [disabled]="priceBid > product.price">Confirm Bid</button>
+    </div>
+</ng-template>
+
+<ng-template #changePriceModal let-modal let-close="close">
+    <div class="modal-header">
+        <h5 class="modal-title">Change Product Price</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <h4 class="mb-2">Change price for product:</h4>
+        <h3 class="product-name"><b>{{ product.product_name }}</b></h3>
+        <div class="form-group">
+            <h5 for="newPrice">New Price:</h5>
+            <input type="number" id="newPrice" [(ngModel)]="newPrice" class="form-control" min="1" [max]="product.price"/>
+            @if (newPrice <= 0) {
+                <span class="text-danger">Price must be greater than zero!</span>
+            }
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onChangePrice()" [disabled]="newPrice <= 0">Confirm Change</button>
+    </div>
+</ng-template>
+
+<ng-template #cartModal let-modal let-close="close">
+    <div class="modal-header">
+        <h5 class="modal-title">Add Product to Cart</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <h4 class="mb-2">Add this product into cart?</h4>
+        <h3 class="product-name"><b>{{ product.product_name }}</b></h3>
+        <h5 class="mb-2">Stocks: <b>{{ product.stock }}</b></h5>
+        <h4 class="product-price mb-4">{{ (product.price * quantityToCart) | currency:'IDR':'Rp':'1.0-0' }}</h4>
+        <div class="form-group">
+            <h5 for="quantity">Quantity:</h5>
+            <input type="number" id="quantity" [(ngModel)]="quantityToCart" class="form-control" min="1" [max]="product.stock"/>
+            @if (quantityToCart > product.stock) {
+                <span class="text-danger">Quantity exceeds available stock!</span>
+            }
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onAddToCart()" [disabled]="quantityToCart > product.stock">Confirm Purchase</button>
+    </div>
+</ng-template>

@@ -1,0 +1,22 @@
+.table-border-style {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.table th, .table td {
+  vertical-align: middle;
+}
+.badge {
+  font-size: 0.9em;
+  padding: 0.5em 0.8em;
+}
+.modal-header {
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+.modal-title {
+  font-weight: 600;
+}
+.modal-footer {
+  background: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}

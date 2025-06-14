@@ -1,0 +1,56 @@
+.product-seller-container {
+  background: #f9f9f9;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.header-section {
+  margin-bottom: 2rem;
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .subtitle {
+    color: #888;
+    font-size: 1.1rem;
+  }
+}
+
+.table {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.product-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.badge {
+  font-size: 0.95rem;
+  padding: 0.4em 0.8em;
+  border-radius: 6px;
+}
+
+.btn {
+  min-width: 80px;
+}
+
+@media (max-width: 700px) {
+  .product-seller-container {
+    padding: 0.5rem;
+  }
+  .table {
+    font-size: 0.95rem;
+  }
+  .product-thumb {
+    width: 40px;
+    height: 40px;
+  }
+}
