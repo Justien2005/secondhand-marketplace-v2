@@ -9,6 +9,9 @@ import { AuthService } from 'src/services/auth.service';
 import { HttpService } from 'src/services/http.service';
 import { SettingService } from 'src/services/setting.service';
 import { HttpClientModule } from '@angular/common/http';
+import { SellerService } from 'src/services/seller.service';
+import { ProductService } from 'src/services/product.service';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -16,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [AppComponent, UnauthorizedComponent, NotFoundComponent, DashboardComponent],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     HttpClientModule,
   ],
@@ -23,7 +27,9 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     AuthService,
     HttpService,
-    SettingService
+    SettingService,
+    SellerService,
+    ProductService
   ],
 })
 export class AppModule { }

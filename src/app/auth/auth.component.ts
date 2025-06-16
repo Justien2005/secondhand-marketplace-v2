@@ -18,7 +18,6 @@ import { RouterModule } from '@angular/router';
 export class AuthComponent implements OnInit{
 
 ngOnInit(): void {
-  console.log('AuthComponent initialized');
   console.log(isStandalone(LoginComponent));
 }
 

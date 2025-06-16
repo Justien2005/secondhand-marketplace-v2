@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-xl-12">
+        <app-card cardTitle="Basic Table" [options]="false" blockClass="table-border-style">
+            <div [formGroup]="productForm">
+                <div class="mb-3">
+                    <span class="fs-6 fw-bold">Product Name<span class="fw-bold" style="color: red; font-size: 11px;">*</span></span>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Input product name" formControlName="product_name"/>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <span class="fs-6 fw-bold">Product Name<span class="fw-bold" style="color: red; font-size: 11px;">*</span></span>
+                    <input
+                        type="file"
+                        class="form-control-file"
+                        id="productPhoto"
+                        (change)="onFileSelected($event)"
+                        accept="image/png, image/jpeg, image/gif" />
+                    <small *ngIf="selectedFile" class="form-text text-muted">
+                        Selected file: {{ selectedFile.name }}
+                    </small>
+                </div>
+                <div class="mb-3">
+                    <span class="fs-6 fw-bold">Category<span class="fw-bold" style="color: red; font-size: 11px;">*</span></span>
+                    <div class="mb-4">
+                        <select class="form-select" formControlName="category_id">
+                            <option value="" selected disabled>Choose category...</option>
+                            <option *ngFor="let category of categoryList" [value]="category.category_id">
+                                {{ category.category_name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <span class="fs-6 fw-bold">Condition<span class="fw-bold" style="color: red; font-size: 11px;">*</span></span>
+                    <div class="mb-4">
+                        <select class="form-select" formControlName="condition_id">
+                            <option value="" selected disabled>Choose conditions...</option>
+                            <option *ngFor="let condition of conditionList" [value]="condition.condition_id">
+                                {{ condition.condition_type }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <span class="fs-6 fw-bold">Price<span class="fw-bold" style="color: red; font-size: 11px;">*</span></span>
+                    <div class="input-group">
+                        <input type="number" class="form-control" placeholder="Input product price" formControlName="price"/>
+                    </div>
+                    @if (productForm.get('price').value < 0) {
+                        <span class="fw-bold mb-3" style="color: red; font-size: 12px;">*price should not lower than 0</span>
+                    }
+                </div>
+                <div class="mb-3">
+                    <span class="fs-6 fw-bold">Product Location<span class="fw-bold" style="color: red; font-size: 11px;">*</span></span>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Input product location" formControlName="location"/>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <span class="fs-6 fw-bold">Description</span>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Input product description" formControlName="description"/>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <span class="fs-6 fw-bold">Stock</span>
+                    <div class="input-group mb-3">
+                        <input type="number" min="1" class="form-control" placeholder="Input product stock" formControlName="stock"/>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-4">
+                <button type="button" class="btn btn-success" (click)="onSaveProduct()" [disabled]="disableSaveButton">Save Product</button>
+            </div>
+        </app-card>
+    </div>
+</div>

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SellerService } from 'src/services/seller.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-seller-details',
@@ -7,23 +10,41 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SellerDetailsComponent implements OnInit {
 
-  seller: any;
+  details: any;
+  loading: boolean = true;
+  sellerId: number;
 
-  constructor() { }
+  constructor(
+    private sellerService: SellerService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    // Simulate fetching seller details
-    this.seller = {
-      seller_id: 1,
-      name: 'Seller 1', 
-      photo: 'https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png',
-      location: 'Location 1',
-      description: 'This is a sample description for Seller 1.'
-    }
+    this.sellerId = this.route.snapshot.params['seller_id'];
+    this.getSellerDetails();
+  }
+
+  getSellerDetails() {
+    this.loading = true;
+    this.sellerService.getSellerDetail(this.sellerId).subscribe({
+      next: (res: any) => {
+        this.details = res.data[0];
+        this.loading = false;
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: err.error.error,
+        });
+        this.loading = false;
+      },
+    })
   }
 
   onClickProductListing(): void {
-    console.log('Navigating to product listing for seller:', this.seller.seller_id);
+    this.router.navigate(['/pages/product-admin/product-seller/' + this.sellerId]);
   }
 
 }

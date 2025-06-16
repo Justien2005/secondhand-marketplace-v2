@@ -1,0 +1,69 @@
+@if (loading) {
+    <div class="loading-overlay">
+        <app-spinner></app-spinner>
+    </div>
+} @else {
+    <div class="catalog-container text-primary">
+        <div class="mb-4">
+            <i style="font-size: 20px;" class="feather icon-shopping-cart me-2"></i>
+            <span style="cursor: pointer;" (click)="onOpenCart()">View Cart</span>
+        </div>
+        <div class="product-grid">
+            <div class="product-card" style="cursor: pointer;" (click)="onProductDetail(product.product_id)" *ngFor="let product of products">
+                <img [src]="product.photoDataUrl || productDummyPhoto" [alt]="product.product_name" class="product-image">
+                <div class="product-info">
+                    <div class="product-details">
+                        <h3>{{ product.product_name }}</h3>
+                        <h6>{{ product.location }}</h6>
+                        <p class="product-price">{{ product.price|currency:'IDR':'Rp':'1.0-0' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<ng-template #modalCart let-modal>
+  <div class="modal-cart-container p-4">
+    <h4 class="mb-3">Your Cart</h4>
+    <table class="table table-striped align-middle" *ngIf="cart.length; else emptyCart">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cart">
+          <td>
+            <img [src]="item.photoDataUrl || productDummyPhoto" [alt]="item.product_name" style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px;">
+          </td>
+          <td>{{ item.product_name }}</td>
+          <td>{{ item.price | currency:'IDR':'Rp':'1.0-0' }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ (item.price * item.quantity) | currency:'IDR':'Rp':'1.0-0' }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="removeFromCart(item.cart_id)">-</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" class="text-end fw-bold">Grand Total</td>
+          <td class="fw-bold">{{ cartTotal | currency:'IDR':'Rp':'1.0-0' }}</td>
+        </tr>
+      </tfoot>
+    </table>
+    <ng-template #emptyCart>
+      <div class="text-center text-muted py-4">Your cart is empty.</div>
+    </ng-template>
+    <div class="d-flex justify-content-between mt-3">
+      <button class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+      <button class="btn btn-success" [disabled]="!cart.length" (click)="checkOutAll()">Checkout All</button>
+    </div>
+  </div>
+</ng-template>

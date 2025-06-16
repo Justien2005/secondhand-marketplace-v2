@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/pages/model/user.model';
 import { AuthService } from 'src/services/auth.service';
@@ -13,6 +13,7 @@ import { AuthService } from 'src/services/auth.service';
 export class RegisterComponent implements OnInit {
 
   userForm: FormGroup;
+  disableSave: boolean = true;
 
   constructor(
     private router: Router,
@@ -22,16 +23,23 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('RegisterComponent initialized');
     this.initUserForm();
+    this.trackingInput();
   }
 
   initUserForm() {
     this.userForm = new FormGroup({
       username: new FormControl(''),
       password: new FormControl(''),
-      email: new FormControl(''),
+      email: new FormControl('', Validators.email),
+      role_id: new FormControl(null),
     });
+  }
+
+  trackingInput() {
+    this.userForm.valueChanges.subscribe((value: any) => {
+      this.disableSave = !value.username || !value.password || !value.email || !value.role_id || this.userForm.invalid;
+    })
   }
 
   onLogin() {

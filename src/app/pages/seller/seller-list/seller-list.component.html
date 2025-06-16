@@ -14,29 +14,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let seller of sellers">
-                            <td class="d-flex align-items-center">
-                                <div class="align-items-center w-20">
-                                    <div>
-                                        <img [src]="seller.photo" alt="Profile Image" class="rounded-circle me-2" width="40" height="40">
+                        @for (seller of sellers; track seller) {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="align-items-center">
+                                            <div>
+                                                <img src="assets/images/user/avatar-1.jpg" alt="Profile Image" class="rounded-circle me-2" width="40" height="40">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span>{{ seller.fullname }}</span>
+                                            </div>
+                                            <div>
+                                                <span>{{ seller.email }}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <div>
-                                        <span>{{ seller.name }}</span>
+                                </td>
+                                <td class="d-flex justify-content-center">
+                                    <div class="d-flex flex-column justify-content-center gap-2 w-50">
+                                        <button class="btn btn-success" (click)="onClickDetails(seller.seller_id)">Details</button>
+                                        <button class="btn btn-info" (click)="onSellerProducts(seller.seller_id)">Product Listing</button>
                                     </div>
-                                    <div>
-                                        <span>{{ seller.location }}</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <button class="btn btn-success" (click)="onClickDetails(seller.seller_id)">Details</button>
-                                    <button class="btn btn-info">Product Listing</button>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

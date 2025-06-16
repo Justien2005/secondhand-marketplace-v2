@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { TaskGuard } from './guards/task.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -32,7 +33,9 @@ const routes: Routes = [
         children: [
           { 
             path: 'admin',
-            loadComponent: () => import('./pages/dashboard/dashboard-admin/dashboard-admin.component').then(c => c.DashboardAdminComponent)
+            loadComponent: () => import('./pages/dashboard/dashboard-admin/dashboard-admin.component').then(c => c.DashboardAdminComponent),
+            canActivate: [TaskGuard],
+            data: { permission: 'DASHBOARD_ADMIN' }
           },
           { 
             path: 'seller',
@@ -45,8 +48,41 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'product-listing',
-        loadComponent: () => import('./pages/product-listing/product-listing.component').then(c => c.ProductListingComponent)
+        path: 'product-admin',
+        children: [
+          {
+            path: 'product-listing',
+            loadComponent: () => import('./pages/product-admin/product-listing/product-listing.component').then(c => c.ProductListingComponent),
+            canActivate: [TaskGuard],
+            data: { permission: 'ADMIN_PRODUCT_LISTING' }
+          },
+          {
+            path: 'product-seller/:seller_id',
+            loadComponent: () => import('./pages/product-admin/product-seller/product-seller.component').then(c => c.ProductSellerComponent),
+          },
+        ]
+      },
+      {
+        path: 'admin-order-list',
+        children: [
+          {
+            path: 'list',
+            loadComponent: () => import('./pages/admin-order-list/admin-order-list.component').then(c => c.AdminOrderListComponent),
+            canActivate: [TaskGuard],
+            data: { permission: 'ADMIN_ORDER_LIST' }
+          },
+        ]
+      },
+      {
+        path: 'admin-setup',
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./pages/admin-setup/admin-setup.component').then(c => c.AdminSetupComponent),
+            canActivate: [TaskGuard],
+            data: { permission: 'ADMIN_SETUP' }
+          },
+        ]
       },
       {
         path: 'seller',
@@ -54,11 +90,49 @@ const routes: Routes = [
           {
             path: 'seller-list',
             loadComponent: () => import('./pages/seller/seller-list/seller-list.component').then(c => c.SellerListComponent),
+            canActivate: [TaskGuard],
+            data: { permission: 'ADMIN_SELLER_LIST' }
           },
           {
             path: 'seller-details/:seller_id',
             loadComponent: () => import('./pages/seller/seller-details/seller-details.component').then(c => c.SellerDetailsComponent),
           }
+        ]
+      },
+      {
+        path: 'seller-pages',
+        children: [
+          {
+            path: 'seller-product-list',
+            loadComponent: () => import('./pages/seller-pages/seller-product-list/seller-product-list.component').then(c => c.SellerProductListComponent),
+          },
+          {
+            path: 'seller-product-add',
+            loadComponent: () => import('./pages/seller-pages/seller-product-add/seller-product-add.component').then(c => c.SellerProductAddComponent),
+          },
+        ]
+      },
+      {
+        path: 'buyer-pages',
+        children: [
+          {
+            path: 'product-catalog',
+            loadComponent: () => import('./pages/buyer-pages/product-catalog/product-catalog.component').then(c => c.ProductCatalogComponent),
+            canActivate: [TaskGuard],
+            data: { permission: 'PRODUCT_CATALOG' }
+          },
+          {
+            path: 'product-detail/:product_id',
+            loadComponent: () => import('./pages/buyer-pages/product-detail/product-detail.component').then(c => c.ProductDetailComponent),
+          },
+          {
+            path: 'buyer-order',
+            loadComponent: () => import('./pages/buyer-pages/buyer-order/buyer-order.component').then(c => c.BuyerOrderComponent),
+          },
+          {
+            path: 'wishlist',
+            loadComponent: () => import('./pages/buyer-pages/wishlist/wishlist.component').then(c => c.WishlistComponent),
+          },
         ]
       },
     ]

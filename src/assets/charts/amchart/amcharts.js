@@ -3229,8 +3229,8 @@
           if ('serial' == g || 'xy' == g || 'gantt' == g)
             (c = this.marginLeftReal), (e = this.marginTopReal), (d = c + this.plotAreaWidth), (f = e + this.plotAreaHeight);
           var g = a + '/javascript-charts/',
-            k = 'JavaScript charts',
-            l = 'JS chart by amCharts';
+            k = '',
+            l = '';
           'ammap' == this.product && ((g = a + '/javascript-maps/'), (k = 'Interactive JavaScript maps'), (l = 'JS map by amCharts'));
           a = document.createElement('a');
           l = document.createTextNode(l);
