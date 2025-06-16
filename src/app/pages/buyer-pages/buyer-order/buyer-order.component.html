@@ -23,6 +23,7 @@
                                 <span class="badge" [ngClass]="{
                         'bg-success': order.status_type === 'DELIVERED',
                         'bg-warning': order.status_type === 'PENDING',
+                        'bg-c-blue': order.status_type === 'PROCESSING',
                         'bg-info': order.status_type === 'SHIPPED',
                         'bg-danger': order.status_type === 'CANCELLED'
                     }">{{ order.status_type }}</span>

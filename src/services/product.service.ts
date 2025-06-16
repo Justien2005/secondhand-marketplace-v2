@@ -86,4 +86,9 @@ export class ProductService {
   deleteBuyerCart(cartId: number) {
     return this.httpService.get(`${this.api}/cart/${cartId}`,);
   }
+
+  // admin dashboard
+  adminDashboardData() {
+    return this.httpService.get(`${this.api}/dashboard-data`,);
+  }
 }
