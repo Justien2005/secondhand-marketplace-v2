@@ -19,8 +19,8 @@ export class ProductService {
     return this.httpService.get(`${this.api}/product/${sellerId}`);
   }
 
-  getProduct() {
-    return this.httpService.get(`${this.api}/product`);
+  getProduct(params: any) {
+    return this.httpService.post(`${this.api}/product-catalog`, params);
   }
 
   getAllProduct() {

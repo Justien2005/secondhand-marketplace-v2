@@ -6,11 +6,12 @@ import Swal from 'sweetalert2';
 import { SpinnerComponent } from 'src/app/theme/shared/components/spinner/spinner.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-catalog',
   standalone: true,
-  imports: [CommonModule, SpinnerComponent],
+  imports: [CommonModule, SpinnerComponent, FormsModule],
   templateUrl: './product-catalog.component.html',
   styleUrl: './product-catalog.component.scss'
 })
@@ -19,6 +20,7 @@ export class ProductCatalogComponent implements OnInit {
   @ViewChild('modalCart', {static: true}) public modalCart: NgbModalRef;
   
   products: any[] = [];
+  categoryList: any[] = [];
   loading: boolean = false;
   productDummyPhoto = 'assets/app-asset/dummy-product.png';
   cart: any[] = [
@@ -26,6 +28,11 @@ export class ProductCatalogComponent implements OnInit {
     { product_id: 1, product_name: 'Vintage Camera', price: 500000, quantity: 2, photoDataUrl: null },
     { product_id: 2, product_name: 'Retro Watch', price: 250000, quantity: 1, photoDataUrl: null }
   ];
+
+  params: any = {
+    search: '',
+    category: '',
+  }
 
   constructor(
     private router: Router,
@@ -37,11 +44,12 @@ export class ProductCatalogComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProducts();
+    this.getCategoryList();
   }
 
   getProducts() {
     this.loading = true;
-    this.productService.getProduct().subscribe({
+    this.productService.getProduct(this.params).subscribe({
       next: (res: any) => {
         this.products = res.data;
         this.getCartList();
@@ -56,6 +64,21 @@ export class ProductCatalogComponent implements OnInit {
         });
       },
     })
+  }
+
+  getCategoryList() {
+    this.productService.getProductCategories().subscribe({
+      next: (res: any) => {
+        this.categoryList = res.data;
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Internal Server Error',
+          text: err.error.error,
+        });
+      }
+    });
   }
 
   getSafeImageUrl(dataUrl: string | null): SafeUrl | null {

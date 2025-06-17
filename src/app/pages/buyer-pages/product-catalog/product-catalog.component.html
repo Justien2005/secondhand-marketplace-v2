@@ -4,10 +4,30 @@
     </div>
 } @else {
     <div class="catalog-container text-primary">
-        <div class="mb-4">
+        <div class="col-md-12">
+          <div class="row mb-4 align-items-end">
+            <div class="col-md-6 mb-2 mb-md-0">
+                <label for="searchInput" class="form-label">Search Products</label>
+                <input id="searchInput" type="text" class="form-control" placeholder="Search by name..." [(ngModel)]="params.search" (keydown.enter)="getProducts()">
+            </div>
+            <div class="col-md-4 mb-2 mb-md-0">
+                <label for="categorySelect" class="form-label">Filter by Category</label>
+                <select id="categorySelect" class="form-select" [(ngModel)]="params.category" (change)="getProducts()">
+                    <option value="">All Categories</option>
+                    <option *ngFor="let cat of categoryList" [value]="cat.category_id">{{ cat.category_name }}</option>
+                </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 text-start mb-4">
             <i style="font-size: 20px;" class="feather icon-shopping-cart me-2"></i>
             <span style="cursor: pointer;" (click)="onOpenCart()">View Cart</span>
         </div>
+        @if (products.length === 0) {
+          <div class="text-center text-muted py-5">
+              <h4>No products found</h4>
+          </div>
+        }
         <div class="product-grid">
             <div class="product-card" style="cursor: pointer;" (click)="onProductDetail(product.product_id)" *ngFor="let product of products">
                 <img [src]="product.photoDataUrl || productDummyPhoto" [alt]="product.product_name" class="product-image">
